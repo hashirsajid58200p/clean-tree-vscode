@@ -1,0 +1,58 @@
+{
+  "name": "clean-tree",
+  "displayName": "Clean Tree",
+  "description": "Generates a clean project file tree by hiding dependencies and hidden folders.",
+  "version": "0.0.1",
+  "icon": "images/icon.png",
+  "engines": {
+    "vscode": "^1.109.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "clean-tree.generate",
+        "title": "Clean Tree: Generate"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "clean-tree.generate",
+          "group": "navigation"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "clean-tree.generate",
+        "key": "ctrl+shift+alt+c",
+        "mac": "cmd+shift+alt+c",
+        "when": "explorerViewletVisible || editorTextFocus"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.109.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "22.x",
+    "typescript-eslint": "^8.56.1",
+    "eslint": "^9.39.3",
+    "typescript": "^5.9.3"
+  },
+  "publisher": "HashirSajid",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hashirsajid58200p/clean-tree"
+  }
+}
