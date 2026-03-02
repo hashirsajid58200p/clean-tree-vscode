@@ -33,22 +33,15 @@
 
 Here is a closer look at what Clean Tree can do:
 
-## ![Clean Tree UI](images/01.png)
+## ![Preview 01](images/01.png)
 
+## ![Preview 02](images/02.png)
 
-## [Context Menu](images/02.png)
+## ![Preview 03](images/03.png)
 
----
+## ![Preview 04](images/04.png)
 
-![Toggle Features](images/03.png)
-
----
-
-![Export Feature](images/04.png)
-
----
-
-![Workflow](images/05.png)
+## ![Preview 05](images/05.png)
 
 ---
 
@@ -71,8 +64,6 @@ Here is a closer look at what Clean Tree can do:
 ---
 
 ## 👨‍💻 About the Author
-
-**Hashir Sajid**
 
 "Hi, I'm Hashir! 👋 I'm passionate about building tools that make developers' lives easier. If you find this extension helpful in your workflow, I'd love to connect with you!"
 
