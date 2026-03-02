@@ -14,7 +14,7 @@
 
 ## 🎥 See it in Action
 
-<video src="images/sample.mp4" width="100%" controls autoplay loop muted></video>
+<video src="https://raw.githubusercontent.com/hashirsajid58200p/clean-tree/main/images/sample.mp4" width="100%" controls autoplay loop muted></video>
 
 ---
 
