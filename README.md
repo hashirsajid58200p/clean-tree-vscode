@@ -33,8 +33,6 @@
 
 Here is a closer look at what Clean Tree can do:
 
-Generate a beautiful, interactive ASCII file tree directly inside your editor.
-
 ![Clean Tree UI](images/01.png)
 
 ![Context Menu](images/02.png)
