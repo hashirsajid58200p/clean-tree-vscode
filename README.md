@@ -35,8 +35,6 @@ Here is a closer look at what Clean Tree can do:
 
 ## ![Preview 01](images/01.png)
 
-
-
 ## ![Preview 02](images/02.png)
 
 ## ![Preview 03](images/03.png)
