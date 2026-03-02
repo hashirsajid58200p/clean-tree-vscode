@@ -33,9 +33,8 @@
 
 Here is a closer look at what Clean Tree can do:
 
-![Clean Tree UI](images/01.png)
+## ![Clean Tree UI](images/01.png)
 
----
 
 ![Context Menu](images/02.png)
 
