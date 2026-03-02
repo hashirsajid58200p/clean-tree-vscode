@@ -12,7 +12,6 @@ vsc-extension-quickstart.md
 
 # Bloat-Killers (Keep node_modules and images ignored)
 node_modules/**
-images/**
 
 # REMOVE 'LICENSE' FROM HERE! 
 # We want the Marketplace to see it.
