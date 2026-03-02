@@ -2,6 +2,12 @@
 
 All notable changes to the "Clean Tree" extension will be documented in this file.
 
+## [0.0.5] - 2026-03-02
+
+### Fixed
+
+- **Marketplace Media Rendering:** Resolved an issue where images and the demonstration video were failing to load on the VS Code Marketplace page. Corrected the repository URL in `package.json` to ensure relative asset paths are properly mapped and resolved during the publishing process.
+
 ## [0.0.4] - 2026-03-02
 
 ### Added
