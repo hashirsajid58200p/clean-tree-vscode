@@ -29,9 +29,11 @@ export function activate(context: vscode.ExtensionContext) {
         { enableScripts: true },
       );
 
-      let hideFolders = true;
-      let hideFiles = true;
-      let showIcons = false;
+      // --- NEW: Retrieve Saved State from VS Code Storage ---
+      // If no state exists yet, we default to our standard settings
+      let hideFolders = context.globalState.get<boolean>("hideFolders", true);
+      let hideFiles = context.globalState.get<boolean>("hideFiles", true);
+      let showIcons = context.globalState.get<boolean>("showIcons", false);
 
       const updateWebview = () => {
         const treeTextHTML = generateTree(
@@ -42,9 +44,15 @@ export function activate(context: vscode.ExtensionContext) {
           showIcons,
           false,
         );
+        const rawTreeText =
+          projectName +
+          "\n" +
+          generateTree(targetPath, "", hideFolders, hideFiles, false, true);
+
         panel.webview.html = getWebviewContent(
           projectName,
           treeTextHTML,
+          rawTreeText,
           hideFolders,
           hideFiles,
           showIcons,
@@ -52,15 +60,18 @@ export function activate(context: vscode.ExtensionContext) {
       };
 
       panel.webview.onDidReceiveMessage(
-        (message) => {
+        async (message) => {
           if (message.command === "toggleFolders") {
             hideFolders = !hideFolders;
+            await context.globalState.update("hideFolders", hideFolders); // SAVE STATE
             updateWebview();
           } else if (message.command === "toggleFiles") {
             hideFiles = !hideFiles;
+            await context.globalState.update("hideFiles", hideFiles); // SAVE STATE
             updateWebview();
           } else if (message.command === "toggleIcons") {
             showIcons = !showIcons;
+            await context.globalState.update("showIcons", showIcons); // SAVE STATE
             updateWebview();
           } else if (message.command === "openGitHub") {
             vscode.env.openExternal(
@@ -71,7 +82,6 @@ export function activate(context: vscode.ExtensionContext) {
               projectName +
               "\n" +
               generateTree(targetPath, "", hideFolders, hideFiles, false, true);
-
             const options: vscode.SaveDialogOptions = {
               defaultUri: vscode.Uri.file(
                 path.join(targetPath, `${projectName}-tree.txt`),
@@ -104,7 +114,7 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(disposableGenerate);
 }
 
-// --- Specific Icon Library Logic ---
+// --- MASSIVELY EXPANDED ICON LOGIC ---
 function getSpecificIcon(
   fileName: string,
   isDir: boolean,
@@ -118,10 +128,30 @@ function getSpecificIcon(
 
   const ext = path.extname(fileName).toLowerCase();
 
+  // Specific File Name Mapping
+  const fileMap: { [key: string]: string } = {
+    ".gitignore": '<i class="devicon-git-plain colored"></i> ',
+    "package.json":
+      '<i class="devicon-nodejs-plain colored" style="color: #83cd29;"></i> ',
+    "tsconfig.json": '<i class="devicon-typescript-plain colored"></i> ',
+    dockerfile: '<i class="devicon-docker-plain colored"></i> ',
+    "docker-compose.yml": '<i class="devicon-docker-plain colored"></i> ',
+    "tailwind.config.js":
+      '<i class="devicon-tailwindcss-original colored"></i> ',
+    "readme.md": '<i class="devicon-markdown-original colored"></i> ',
+  };
+
+  if (fileMap[fileName.toLowerCase()]) return fileMap[fileName.toLowerCase()];
+  if (fileName.startsWith(".env"))
+    return '<i class="fa-solid fa-key" style="color: #FFD700;"></i> ';
+
   switch (ext) {
+    // --- Web & Scripting ---
     case ".html":
       return '<i class="devicon-html5-plain colored"></i> ';
     case ".css":
+    case ".scss":
+    case ".sass":
       return '<i class="devicon-css3-plain colored"></i> ';
     case ".js":
       return '<i class="devicon-javascript-plain colored"></i> ';
@@ -132,31 +162,78 @@ function getSpecificIcon(
       return '<i class="devicon-react-original colored"></i> ';
     case ".json":
       return '<i class="devicon-json-plain colored" style="color: #FFD700;"></i> ';
-    case ".cpp":
-    case ".c":
-      return '<i class="devicon-cplusplus-plain colored"></i> ';
+    case ".php":
+      return '<i class="devicon-php-plain colored"></i> ';
+
+    // --- Programming Languages ---
     case ".py":
       return '<i class="devicon-python-plain colored"></i> ';
     case ".java":
+    case ".jar":
       return '<i class="devicon-java-plain colored"></i> ';
+    case ".cpp":
+    case ".hpp":
+    case ".cc":
+      return '<i class="devicon-cplusplus-plain colored"></i> ';
+    case ".c":
+    case ".h":
+      return '<i class="devicon-c-plain colored"></i> ';
+    case ".cs":
+      return '<i class="devicon-csharp-plain colored"></i> ';
     case ".rs":
       return '<i class="devicon-rust-plain colored"></i> ';
-    case ".node":
-      return '<i class="devicon-nodejs-plain colored"></i> ';
+    case ".go":
+      return '<i class="devicon-go-original-wordmark colored"></i> ';
+    case ".rb":
+      return '<i class="devicon-ruby-plain colored"></i> ';
+    case ".swift":
+      return '<i class="devicon-swift-plain colored"></i> ';
+    case ".kt":
+    case ".kts":
+      return '<i class="devicon-kotlin-plain colored"></i> ';
+    case ".dart":
+      return '<i class="devicon-dart-plain colored"></i> ';
+
+    // --- Media & Images ---
     case ".png":
     case ".jpg":
     case ".jpeg":
-    case ".svg":
     case ".gif":
+    case ".webp":
+    case ".ico":
       return '<i class="fa-solid fa-image" style="color: #4CAF50;"></i> ';
-    case ".zip":
-    case ".tar":
-    case ".gz":
-      return '<i class="fa-solid fa-file-zipper" style="color: #ccc;"></i> ';
-    case ".env":
-      return '<i class="fa-solid fa-gear" style="color: #aaa;"></i> ';
+    case ".svg":
+      return '<i class="fa-solid fa-file-code" style="color: #FF9800;"></i> ';
+    case ".mp4":
+    case ".mov":
+    case ".avi":
+      return '<i class="fa-solid fa-file-video" style="color: #E91E63;"></i> ';
+
+    // --- Config & Data ---
+    case ".yaml":
+    case ".yml":
+      return '<i class="fa-solid fa-gears" style="color: #CB171E;"></i> ';
+    case ".xml":
+      return '<i class="fa-solid fa-file-code" style="color: #757575;"></i> ';
+    case ".sql":
+      return '<i class="fa-solid fa-database" style="color: #00BCD4;"></i> ';
+
+    // --- Documents ---
     case ".md":
       return '<i class="devicon-markdown-original colored"></i> ';
+    case ".pdf":
+      return '<i class="fa-solid fa-file-pdf" style="color: #F44336;"></i> ';
+    case ".txt":
+      return '<i class="fa-solid fa-file-lines" style="color: #ddd;"></i> ';
+
+    // --- Archives ---
+    case ".zip":
+    case ".rar":
+    case ".7z":
+    case ".tar":
+    case ".gz":
+      return '<i class="fa-solid fa-file-zipper" style="color: #FFC107;"></i> ';
+
     default:
       return '<i class="fa-regular fa-file" style="color: #999;"></i> ';
   }
@@ -173,7 +250,6 @@ function generateTree(
   let result = "";
   try {
     const items = fs.readdirSync(dirPath);
-
     const folderJunk = [
       ".git",
       "node_modules",
@@ -211,16 +287,12 @@ function generateTree(
       }
     });
 
-    // --- NEW LOGIC: Sort Folders First, Then Files ---
     filteredItems.sort((a, b) => {
       try {
         const aIsDir = fs.statSync(path.join(dirPath, a)).isDirectory();
         const bIsDir = fs.statSync(path.join(dirPath, b)).isDirectory();
-
-        if (aIsDir && !bIsDir) return -1; // 'a' is a folder, push to top
-        if (!aIsDir && bIsDir) return 1; // 'b' is a folder, push to top
-
-        // If both are folders or both are files, sort alphabetically
+        if (aIsDir && !bIsDir) return -1;
+        if (!aIsDir && bIsDir) return 1;
         return a.toLowerCase().localeCompare(b.toLowerCase());
       } catch (e) {
         return 0;
@@ -233,14 +305,11 @@ function generateTree(
       try {
         const stat = fs.statSync(itemPath);
         const pointer = isLast ? "┗ " : "┣ ";
-
         let iconHTML = "";
         if (showIcons && !isRawExport) {
           iconHTML = getSpecificIcon(item, stat.isDirectory());
         }
-
         result += `${prefix}${pointer}${iconHTML}${item}\n`;
-
         if (stat.isDirectory()) {
           const nextPrefix = prefix + (isLast ? "  " : "┃ ");
           result += generateTree(
@@ -261,6 +330,7 @@ function generateTree(
 function getWebviewContent(
   projectName: string,
   treeText: string,
+  rawTreeText: string,
   hideFolders: boolean,
   hideFiles: boolean,
   showIcons: boolean,
@@ -307,64 +377,48 @@ function getWebviewContent(
                 cursor: pointer;
                 font-size: 12px;
                 font-weight: 600;
-                transition: background 0.2s, border 0.2s;
+                height: 31px;
+                box-sizing: border-box;
+                display: flex;
+                align-items: center;
+                transition: all 0.2s;
             }
-            .btn:hover {
-                background-color: #005999;
-                border-color: #005999;
-            }
-            .btn.active {
-                background-color: #1e1e1e;
-                border: 1px solid #007acc;
-                color: #007acc;
-            }
-            .btn.active:hover {
-                background-color: #2a2a2a;
-            }
+            .btn:hover { background-color: #005999; border-color: #005999; }
+            .btn.active { background-color: #1e1e1e; border: 1px solid #007acc; color: #007acc; }
             
-            .btn-save { 
-                background-color: #218838; 
-                border-color: #218838; 
-                color: white; 
-            }
-            .btn-save:hover { 
-                background-color: #19692c; 
-                border-color: #19692c; 
-            }
-            
+            .btn-copy { background-color: #6c757d; border-color: #6c757d; }
+            .btn-save { background-color: #218838; border-color: #218838; }
+
             .btn-heart {
                 background-color: #e60000;
                 border: none;
                 color: white;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 7px 10px;
+                width: 31px; 
+                height: 31px;
                 border-radius: 4px;
                 cursor: pointer;
+                display: grid;
+                place-items: center;
+                padding: 0; 
+                margin: 0;
                 transition: background 0.2s;
             }
-            .btn-heart:hover {
-                background-color: #b30000; 
+            .btn-heart:hover { background-color: #b30000; }
+            .btn-heart i {
+                margin: 0 !important; 
+                padding: 0 !important;
+                font-size: 14px;
+                line-height: 1;
+                display: block;
             }
 
-            .tree-content {
-                padding: 20px;
-                white-space: pre;
-                line-height: 1.6;
-            }
-            .project-name {
-                font-weight: bold;
-                font-size: 16px;
-            }
+            .tree-content { padding: 20px; white-space: pre; line-height: 1.6; }
+            .project-name { font-weight: bold; font-size: 16px; }
+            
             i {
                 font-size: 14px;
                 vertical-align: middle;
                 margin-right: 5px;
-            }
-            .btn-heart i {
-                margin-right: 0;
-                font-size: 14px;
             }
             .devicon-html5-plain, .devicon-css3-plain, .devicon-javascript-plain, 
             .devicon-typescript-plain, .devicon-react-original, .devicon-nodejs-plain,
@@ -378,7 +432,7 @@ function getWebviewContent(
             <div class="project-name">${projectName} Clean Tree</div>
             <div class="controls">
                 <button class="btn ${!hideFolders ? "active" : ""}" onclick="vscode.postMessage({command:'toggleFolders'})">
-                    ${hideFolders ? "Show" : "Hide"} Dependencies/Hidden Folders
+                    ${hideFolders ? "Show" : "Hide"} Dependencies
                 </button>
                 <button class="btn ${!hideFiles ? "active" : ""}" onclick="vscode.postMessage({command:'toggleFiles'})">
                     ${hideFiles ? "Show" : "Hide"} Files
@@ -386,19 +440,34 @@ function getWebviewContent(
                 <button class="btn ${showIcons ? "active" : ""}" onclick="vscode.postMessage({command:'toggleIcons'})">
                     Icons: ${showIcons ? "ON" : "OFF"}
                 </button>
+                <button id="copyBtn" class="btn btn-copy" onclick="copyToClipboard()">
+                    <i class="fa-solid fa-copy"></i> Copy
+                </button>
                 <button class="btn btn-save" onclick="vscode.postMessage({command:'saveFile'})">
                     <i class="fa-solid fa-floppy-disk"></i> Save
                 </button>
-                
-                <button class="btn-heart" onclick="vscode.postMessage({command:'openGitHub'})" title="Support the Creator">
+                <button class="btn-heart" onclick="vscode.postMessage({command:'openGitHub'})" title="Follow Hashir">
                     <i class="fa-solid fa-heart"></i>
                 </button>
             </div>
         </div>
-        
         <div class="tree-content"><strong>${rootIcon}${projectName}</strong>\n${treeText}</div>
-        
-        <script>const vscode = acquireVsCodeApi();</script>
+        <script>
+            const vscode = acquireVsCodeApi();
+            const rawText = \`${rawTreeText}\`;
+            function copyToClipboard() {
+                navigator.clipboard.writeText(rawText).then(() => {
+                    const btn = document.getElementById('copyBtn');
+                    const originalHTML = btn.innerHTML;
+                    btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+                    btn.style.backgroundColor = '#218838';
+                    setTimeout(() => {
+                        btn.innerHTML = originalHTML;
+                        btn.style.backgroundColor = '';
+                    }, 2000);
+                });
+            }
+        </script>
     </body>
     </html>`;
 }
