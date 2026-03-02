@@ -33,15 +33,22 @@
 
 Here is a closer look at what Clean Tree can do:
 
-## (images/01.png)
+## ![Clean Tree UI](images/01.png)
 
-## (images/02.png)
 
-## (images/03.png)
+## [Context Menu](images/02.png)
 
-## (images/04.png)
+---
 
-## (images/05.png)
+![Toggle Features](images/03.png)
+
+---
+
+![Export Feature](images/04.png)
+
+---
+
+![Workflow](images/05.png)
 
 ---
 
