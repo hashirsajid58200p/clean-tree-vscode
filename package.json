@@ -2,7 +2,7 @@
   "name": "clean-tree",
   "displayName": "Clean Tree",
   "description": "Generates a clean project file tree by hiding dependencies and hidden folders.",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "icon": "images/icon.png",
   "engines": {
     "vscode": "^1.109.0"

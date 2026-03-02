@@ -2,6 +2,19 @@
 
 All notable changes to the "Clean Tree" extension will be documented in this file.
 
+## [0.0.3] - 2026-03-02
+
+### Added
+
+- **MIT License:** Officially added the MIT License to the project for legal protection and open-source compliance.
+
+### Fixed
+
+- **Bundle Optimization:** Massively reduced the extension install size by excluding unnecessary development files and media from the final package.
+- **Icon Resolution:** Fixed a publishing error by properly including the extension icon while excluding other heavy assets.
+
+---
+
 ## [0.0.2] - 2026-03-02
 
 ### Added
