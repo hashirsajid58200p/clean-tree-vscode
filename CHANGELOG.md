@@ -2,6 +2,20 @@
 
 All notable changes to the "Clean Tree" extension will be documented in this file.
 
+## [0.0.4] - 2026-03-02
+
+### Added
+
+- **Enhanced Documentation:** Completely revamped the `README.md` with a beautifully structured layout and better formatting.
+- **Video Demonstration:** Added a seamless, auto-playing video showcase demonstrating the extension's core features directly in the documentation.
+- **Visual Tour:** Integrated a comprehensive screenshot gallery to clearly highlight the UI, context menu, and toggle features.
+
+### Fixed
+
+- **Media Rendering:** Resolved an issue where the showcase video was not rendering in the GitHub preview by migrating media hosting to GitHub's native asset delivery network.
+
+---
+
 ## [0.0.3] - 2026-03-02
 
 ### Added
