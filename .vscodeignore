@@ -10,8 +10,9 @@ vsc-extension-quickstart.md
 **/*.ts
 **/.vscode-test.*
 
-# --- The Missing Bloat-Killers ---
+# Bloat-Killers (Keep node_modules and images ignored)
 node_modules/**
 images/**
-LICENSE
-CHANGELOG.md
+
+# REMOVE 'LICENSE' FROM HERE! 
+# We want the Marketplace to see it.
