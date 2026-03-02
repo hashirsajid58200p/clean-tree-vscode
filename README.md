@@ -1,7 +1,7 @@
 <div align="center">
   <img src="images/icon.png" alt="Clean Tree Logo" width="128" />
   
-  # Clean Tree 🌳
+  # 🌳 Clean Tree
   
   [![Version](https://img.shields.io/visual-studio-marketplace/v/HashirSajid.clean-tree?style=flat-square&color=007acc)](https://marketplace.visualstudio.com/items?itemName=HashirSajid.clean-tree)
   [![Installs](https://img.shields.io/visual-studio-marketplace/i/HashirSajid.clean-tree?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=HashirSajid.clean-tree)
@@ -33,29 +33,16 @@
 
 Here is a closer look at what Clean Tree can do:
 
-### The Webview Interface
-
 Generate a beautiful, interactive ASCII file tree directly inside your editor.
+
 ![Clean Tree UI](images/01.png)
 
-### Context Menu Integration
-
-Easily generate a tree by right-clicking any folder in your VS Code Explorer.
 ![Context Menu](images/02.png)
 
-### Toggle & Customize
-
-Use the sticky top bar to turn icons on/off, or hide junk folders and hidden files.
 ![Toggle Features](images/03.png)
 
-### Copy or Export
-
-Instantly copy the raw text to your clipboard or save it as a `.txt` file for your documentation.
 ![Export Feature](images/04.png)
 
-### Seamless Workflow
-
-Focus on your actual code without the distraction of environment files and build outputs.
 ![Workflow](images/05.png)
 
 ---
@@ -80,9 +67,9 @@ Focus on your actual code without the distraction of environment files and build
 
 ## 👨‍💻 About the Author
 
-**Hashir Sajid** _Freelance Full-Stack Web Developer & Software Engineer_
+**Hashir Sajid**
 
-I build tools that make developers' lives easier. If you find this extension helpful, feel free to connect with me!
+"Hi, I'm Hashir! 👋 I'm passionate about building tools that make developers' lives easier. If you find this extension helpful in your workflow, I'd love to connect with you!"
 
 - **GitHub:** [@hashirsajid58200p](https://github.com/hashirsajid58200p)
 - **LinkedIn:** [linkedin.com/in/hashirsajid](https://www.linkedin.com/in/hashirsajid)
