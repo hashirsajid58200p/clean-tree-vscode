@@ -2,6 +2,12 @@
 
 All notable changes to the "Clean Tree" extension will be documented in this file.
 
+## [0.0.6] - 2026-03-04
+
+### Fixed
+
+- **Marketplace Media Rendering:** Replaced the unsupported HTML `<video>` tag in the `README.md` with an animated GIF to bypass the VS Code Marketplace's strict HTML sanitizer, ensuring the demonstration plays perfectly on the extension page.
+
 ## [0.0.5] - 2026-03-02
 
 ### Fixed
